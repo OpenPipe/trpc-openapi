@@ -26,7 +26,8 @@ const createOpenApiNodeHttpHandler = (opts) => {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
         const sendResponse = (statusCode, headers, body) => {
             res.statusCode = statusCode;
-            if (body instanceof ReadableStream) {
+            // Support sending SSE streams
+            if (body && typeof body.getReader === 'function') {
                 const reader = body.getReader();
                 res.setHeader('Connection', 'keep-alive');
                 res.setHeader('Content-Type', 'text/event-stream');
@@ -38,7 +39,7 @@ const createOpenApiNodeHttpHandler = (opts) => {
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                             ({ done, value } = await reader.read());
                             if (!done)
-                                res.write(value);
+                                res.write(`data: ${Buffer.from(value.buffer).toString()}\n\n`);
                         } while (!done);
                     }
                     catch (error) {
@@ -59,7 +60,6 @@ const createOpenApiNodeHttpHandler = (opts) => {
                     }
                 }
                 res.end(JSON.stringify(body));
-                return;
             }
         };
         const method = req.method;
