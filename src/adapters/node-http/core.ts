@@ -214,6 +214,7 @@ export const createOpenApiNodeHttpHandler = <
           : errorShape?.message ?? error.message ?? 'An error occurred',
         code: error.code,
         issues: isInputValidationError ? (error.cause as ZodError).errors : undefined,
+        ...error.extraFields,
       };
       sendResponse(statusCode, headers, body);
     }

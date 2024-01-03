@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateOpenApiDocument = exports.openApiVersion = exports.fastifyTRPCOpenApiPlugin = exports.createOpenApiAwsLambdaHandler = exports.createOpenApiNuxtHandler = exports.createOpenApiNextHandler = exports.createOpenApiHttpHandler = exports.createOpenApiExpressMiddleware = void 0;
+exports.generateOpenApiDocument = exports.openApiVersion = exports.fastifyTRPCOpenApiPlugin = exports.ExtendedTRPCError = exports.createOpenApiAwsLambdaHandler = exports.createOpenApiNuxtHandler = exports.createOpenApiNextHandler = exports.createOpenApiHttpHandler = exports.createOpenApiExpressMiddleware = void 0;
 const adapters_1 = require("./adapters");
 Object.defineProperty(exports, "createOpenApiAwsLambdaHandler", { enumerable: true, get: function () { return adapters_1.createOpenApiAwsLambdaHandler; } });
 Object.defineProperty(exports, "createOpenApiExpressMiddleware", { enumerable: true, get: function () { return adapters_1.createOpenApiExpressMiddleware; } });
@@ -11,4 +11,6 @@ Object.defineProperty(exports, "fastifyTRPCOpenApiPlugin", { enumerable: true, g
 const generator_1 = require("./generator");
 Object.defineProperty(exports, "generateOpenApiDocument", { enumerable: true, get: function () { return generator_1.generateOpenApiDocument; } });
 Object.defineProperty(exports, "openApiVersion", { enumerable: true, get: function () { return generator_1.openApiVersion; } });
+const types_1 = require("./types");
+Object.defineProperty(exports, "ExtendedTRPCError", { enumerable: true, get: function () { return types_1.ExtendedTRPCError; } });
 //# sourceMappingURL=index.js.map

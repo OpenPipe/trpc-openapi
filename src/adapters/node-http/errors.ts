@@ -1,5 +1,7 @@
 import { TRPCError } from '@trpc/server';
 
+import { ExtendedTRPCError } from '../../types';
+
 export const TRPC_ERROR_CODE_HTTP_STATUS: Record<TRPCError['code'], number> = {
   PARSE_ERROR: 400,
   BAD_REQUEST: 400,
@@ -17,9 +19,12 @@ export const TRPC_ERROR_CODE_HTTP_STATUS: Record<TRPCError['code'], number> = {
   UNPROCESSABLE_CONTENT: 422,
 };
 
-export function getErrorFromUnknown(cause: unknown): TRPCError {
+export function getErrorFromUnknown(cause: unknown): ExtendedTRPCError {
   if (cause instanceof Error && cause.name === 'TRPCError') {
-    return cause as TRPCError;
+    if ('cause' in cause && cause.cause instanceof ExtendedTRPCError) {
+      return cause.cause;
+    }
+    return cause as ExtendedTRPCError;
   }
 
   let errorCause: Error | undefined = undefined;
@@ -30,7 +35,7 @@ export function getErrorFromUnknown(cause: unknown): TRPCError {
     stack = cause.stack;
   }
 
-  const error = new TRPCError({
+  const error = new ExtendedTRPCError({
     message: 'Internal server error',
     code: 'INTERNAL_SERVER_ERROR',
     cause: errorCause,

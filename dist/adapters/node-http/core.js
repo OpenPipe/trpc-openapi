@@ -149,13 +149,9 @@ const createOpenApiNodeHttpHandler = (opts) => {
                 error.cause.name === 'ZodError';
             const statusCode = (_h = (_g = meta === null || meta === void 0 ? void 0 : meta.status) !== null && _g !== void 0 ? _g : errors_1.TRPC_ERROR_CODE_HTTP_STATUS[error.code]) !== null && _h !== void 0 ? _h : 500;
             const headers = (_j = meta === null || meta === void 0 ? void 0 : meta.headers) !== null && _j !== void 0 ? _j : {};
-            const body = {
-                message: isInputValidationError
+            const body = Object.assign({ message: isInputValidationError
                     ? 'Input validation failed'
-                    : (_l = (_k = errorShape === null || errorShape === void 0 ? void 0 : errorShape.message) !== null && _k !== void 0 ? _k : error.message) !== null && _l !== void 0 ? _l : 'An error occurred',
-                code: error.code,
-                issues: isInputValidationError ? error.cause.errors : undefined,
-            };
+                    : (_l = (_k = errorShape === null || errorShape === void 0 ? void 0 : errorShape.message) !== null && _k !== void 0 ? _k : error.message) !== null && _l !== void 0 ? _l : 'An error occurred', code: error.code, issues: isInputValidationError ? error.cause.errors : undefined }, error.extraFields);
             sendResponse(statusCode, headers, body);
         }
     };

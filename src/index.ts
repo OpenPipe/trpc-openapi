@@ -18,6 +18,7 @@ import {
   openApiVersion,
 } from './generator';
 import {
+  ExtendedTRPCError,
   OpenApiErrorResponse,
   OpenApiMeta,
   OpenApiMethod,
@@ -39,6 +40,7 @@ export {
   createOpenApiNextHandler,
   createOpenApiNuxtHandler,
   createOpenApiAwsLambdaHandler,
+  ExtendedTRPCError,
   fastifyTRPCOpenApiPlugin,
   openApiVersion,
   generateOpenApiDocument,

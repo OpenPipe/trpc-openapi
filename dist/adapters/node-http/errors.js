@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getErrorFromUnknown = exports.TRPC_ERROR_CODE_HTTP_STATUS = void 0;
-const server_1 = require("@trpc/server");
+const types_1 = require("../../types");
 exports.TRPC_ERROR_CODE_HTTP_STATUS = {
     PARSE_ERROR: 400,
     BAD_REQUEST: 400,
@@ -20,6 +20,9 @@ exports.TRPC_ERROR_CODE_HTTP_STATUS = {
 };
 function getErrorFromUnknown(cause) {
     if (cause instanceof Error && cause.name === 'TRPCError') {
+        if ('cause' in cause && cause.cause instanceof types_1.ExtendedTRPCError) {
+            return cause.cause;
+        }
         return cause;
     }
     let errorCause = undefined;
@@ -28,7 +31,7 @@ function getErrorFromUnknown(cause) {
         errorCause = cause;
         stack = cause.stack;
     }
-    const error = new server_1.TRPCError({
+    const error = new types_1.ExtendedTRPCError({
         message: 'Internal server error',
         code: 'INTERNAL_SERVER_ERROR',
         cause: errorCause,

@@ -1,4 +1,4 @@
-import { Procedure, ProcedureParams, Router } from '@trpc/server';
+import { Procedure, ProcedureParams, Router, TRPCError } from '@trpc/server';
 import type { RootConfig } from '@trpc/server/dist/core/internals/config';
 import { TRPC_ERROR_CODE_KEY } from '@trpc/server/rpc';
 import type { RouterDef } from '@trpc/server/src/core/router';
@@ -49,5 +49,15 @@ export type OpenApiErrorResponse = {
     issues?: ZodIssue[];
 };
 export type OpenApiResponse<D = any> = OpenApiSuccessResponse<D> | OpenApiErrorResponse;
+export declare class ExtendedTRPCError extends TRPCError {
+    readonly name = "TRPCError";
+    readonly extraFields: Record<string, any>;
+    constructor(props: {
+        code: TRPC_ERROR_CODE_KEY;
+        message: string;
+        cause?: Error;
+        extraFields?: Record<string, any>;
+    });
+}
 export {};
 //# sourceMappingURL=types.d.ts.map

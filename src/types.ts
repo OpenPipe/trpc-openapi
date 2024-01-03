@@ -1,4 +1,4 @@
-import { Procedure, ProcedureParams, Router } from '@trpc/server';
+import { Procedure, ProcedureParams, Router, TRPCError } from '@trpc/server';
 import type { RootConfig } from '@trpc/server/dist/core/internals/config';
 import { TRPC_ERROR_CODE_KEY } from '@trpc/server/rpc';
 import type { RouterDef } from '@trpc/server/src/core/router';
@@ -77,3 +77,18 @@ export type OpenApiErrorResponse = {
 };
 
 export type OpenApiResponse<D = any> = OpenApiSuccessResponse<D> | OpenApiErrorResponse;
+
+export class ExtendedTRPCError extends TRPCError {
+  public readonly name = 'TRPCError';
+  public readonly extraFields: Record<string, any>;
+
+  public constructor(props: {
+    code: TRPC_ERROR_CODE_KEY;
+    message: string;
+    cause?: Error;
+    extraFields?: Record<string, any>;
+  }) {
+    super(props);
+    this.extraFields = props.extraFields ?? {};
+  }
+}
