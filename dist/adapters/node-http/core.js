@@ -32,14 +32,18 @@ const createOpenApiNodeHttpHandler = (opts) => {
                 res.setHeader('Connection', 'keep-alive');
                 res.setHeader('Content-Type', 'text/event-stream');
                 res.setHeader('Cache-Control', 'no-cache');
+                res.flushHeaders();
                 const processStream = async (reader, res) => {
                     try {
                         let done, value;
                         do {
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                             ({ done, value } = await reader.read());
-                            if (!done)
+                            if (!done) {
                                 res.write(`data: ${Buffer.from(value.buffer).toString()}\n\n`);
+                                // @ts-expect-error flush is not in the types
+                                res.flush();
+                            }
                         } while (!done);
                     }
                     catch (error) {
